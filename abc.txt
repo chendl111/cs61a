@@ -1,2 +1,3 @@
-update from thinkbook
- first upload
+
+delete sth from thinkbook
+first upload  
