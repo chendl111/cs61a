@@ -13,9 +13,9 @@ def a_plus_abs_b(a, b):
     ['return f(a, b)']
     """
     if b < 0:
-        f = a-b
+        f = sub
     else:
-        f = a+b
+        f = add
     return f(a, b)
 
 
@@ -99,6 +99,7 @@ def with_if_function():
     >>> print(result)
     None
     """
+    # 调用if_function函数，并传入三个参数：cond()函数的结果作为条件，true_func()函数的结果作为条件为真时的返回值，false_func()函数的结果作为条件为假时的返回值
     return if_function(cond(), true_func(), false_func())
 
 def cond():
@@ -132,4 +133,15 @@ def hailstone(n):
     7
     """
     "*** YOUR CODE HERE ***"
+    cnt=0
+    while(True):
+        print(n)
+        cnt=cnt+1
+        if(n%2==0):
+            n=n//2
+        elif(n!=1):
+            n=3*n+1
+        else:
+            break
+    return cnt
 
