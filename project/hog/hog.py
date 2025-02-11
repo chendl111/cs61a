@@ -24,6 +24,17 @@ def roll_dice(num_rolls, dice=six_sided):
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
     # END PROBLEM 1
+    flagOne = False
+    total=0
+    for i in range(num_rolls):
+        output = dice()
+        if output == 1:
+            flagOne = True
+        total+=output
+    if flagOne:
+        return 1
+    else:
+        return total
 
 
 def free_bacon(score):
@@ -37,6 +48,10 @@ def free_bacon(score):
     # Trim pi to only (score + 1) digit(s)
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    totalDigit = len(str(pi)) #  将变量pi转换为字符串，并计算其长度，即pi的总位数
+    removeDigit = totalDigit - (score + 1) #  计算需要移除的位数，即总位数减去score再加1
+    divisor = pow(10,removeDigit) #  计算除数，即10的removeDigit次方，用于截取pi的前几位
+    pi = pi // divisor
     # END PROBLEM 2
 
     return pi % 10 + 3
@@ -57,6 +72,10 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert opponent_score < 100, 'The game should be over.'
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    if num_rolls == 0:
+        return free_bacon(opponent_score)
+    else:
+        return roll_dice(num_rolls, dice)
     # END PROBLEM 3
 
 
@@ -79,6 +98,12 @@ def swine_align(player_score, opponent_score):
     """
     # BEGIN PROBLEM 4a
     "*** YOUR CODE HERE ***"
+    if opponent_score==0:#特判15,0
+        return False
+    def gcd(a,b):
+        return a if b==0 else gcd(b,a%b)
+
+    return gcd(player_score,opponent_score)>=10
     # END PROBLEM 4a
 
 
@@ -101,6 +126,7 @@ def pig_pass(player_score, opponent_score):
     """
     # BEGIN PROBLEM 4b
     "*** YOUR CODE HERE ***"
+    return opponent_score - player_score > 0 and opponent_score - player_score < 3
     # END PROBLEM 4b
 
 
@@ -140,6 +166,22 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    while(score0 < goal and score1 < goal):
+        if who == 0:
+            num0 = strategy0(score0,score1)
+            getScore0 = take_turn(num0,score1,dice)
+            score0+=getScore0
+            if swine_align(score0,score1):
+                continue
+            if pig_pass(score0,score1):
+                continue
+        else:
+            num1 = strategy1(score1,score0)
+            getScore1 = take_turn(num1,score0,dice)
+            score1+=getScore1
+            if swine_align(score1,score0) or pig_pass(score1,score0):
+                continue
+        who = other(who)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
