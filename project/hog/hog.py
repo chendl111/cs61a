@@ -171,21 +171,20 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
             num0 = strategy0(score0,score1)
             getScore0 = take_turn(num0,score1,dice)
             score0+=getScore0
-            if swine_align(score0,score1):
-                continue
-            if pig_pass(score0,score1):
-                continue
+            if not swine_align(score0,score1) and not pig_pass(score0,score1):
+                who = other(who)
         else:
             num1 = strategy1(score1,score0)
             getScore1 = take_turn(num1,score0,dice)
             score1+=getScore1
-            if swine_align(score1,score0) or pig_pass(score1,score0):
-                continue
-        who = other(who)
+            # print("DEBUG:","who:",who,"score0:",score0,"score1:",score1,"swing_align:",swine_align(score0,score1),"pig_pass:",pig_pass(score0,score1))
+            if not swine_align(score1,score0) and not pig_pass(score1,score0):
+                who = other(who)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
-    "*** YOUR CODE HERE ***"
+        "*** YOUR CODE HERE ***"
+        say = say(score0,score1)
     # END PROBLEM 6
     return score0, score1
 
@@ -270,6 +269,20 @@ def announce_highest(who, last_score=0, running_high=0):
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    #print("DEBUG:",who,last_score,running_high)
+    def say(score0, score1):
+        # print("DEBUG:",score0,score1)
+        score = 0
+        if who==0:
+            score=score0
+        else:
+            score = score1
+        running_temp = score-last_score
+        if running_temp > running_high:
+            print(running_temp, 'point(s)! The most yet for Player',who)
+            return announce_highest(who,score,running_temp)
+        return announce_highest(who,score,running_high)
+    return say
     # END PROBLEM 7
 
 

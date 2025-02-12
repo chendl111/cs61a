@@ -1,10 +1,9 @@
-import hog
-always_three = hog.make_test_dice(3)
-always_seven = hog.make_test_dice(7)
- #
- # Use strategies
- # We recommend working this out turn-by-turn on a piece of paper (use Python for difficult calculations).
-strat0 = lambda score, opponent: opponent % 10
-strat1 = lambda score, opponent: max((score // 10) - 4, 0)
-s0, s1 = hog.play(strat0, strat1, score0=71, score1=80, dice=always_seven)
-print(s0,s1)
+from hog import announce_highest
+f0 = announce_highest(1) # Only announce Player 1 score gains
+f1 = f0(12, 0)
+f2 = f1(12, 9)
+f3 = f2(20, 9)
+f4 = f3(20, 30)
+f5 = f4(20, 47) # Player 1 gets 17 points; not enough for a new high
+f6 = f5(21, 47)
+f7 = f6(21, 77)
